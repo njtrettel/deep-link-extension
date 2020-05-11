@@ -1,38 +1,121 @@
 .App {
+  width: 300px;
+  height: 400px;
+  padding: 20px 10px;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 10px;
+  padding: 0 10px;
+  height: 40px;
+  color: white;
+  background-color: rgba(0, 0, 100, .8);
+}
+
+.nav-bar__title {
+  font-size: 16px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.nav-bar__title--group {
+  margin-top: -16px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Groups List */
+.groups-list {
   display: flex;
   flex-direction: column;
+  flex: 1;
+}
+
+.groups-list__item {
+  padding: 5px 0;
+  text-decoration: none;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+}
+
+.groups-list__item:hover {
+  cursor: pointer;
+  background-color: rgba(0,0,0,0.05);
+}
+
+.groups-list__item:hover .delete-button {
+  display: inline;
+}
+
+.groups-list__empty {
+  flex: 1;
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+/* Group */
+.group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.group__empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Links */
+.deep-link {
+  padding: 5px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.deep-link:hover .delete-button {
+  display: inline;
+}
+
+/* Add item */
+.add-item {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.add-item__field--error {
+  border-color: red;
+}
+
+.add-item__actions {
+  display: flex;
+  justify-content: center;
+}
+.add-item__actions > * {
+  flex: 1;
+}
+
+/* Back button */
+.back-button {
+  z-index: 1;
+}
+
+.back-button:hover {
+  cursor: pointer;
+}
+
+/* Delete buttons */
+.delete-button {
+  display: none;
+  padding: 0 10px;
+}
+.delete-button:hover {
+  color: red;
+  cursor: pointer;
 }
