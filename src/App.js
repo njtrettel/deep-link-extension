@@ -3,7 +3,6 @@ import { Switch, Route } from 'react-router-dom';
 import NavBar from './NavBar';
 import GroupsList from './GroupsList';
 import Group from './Group';
-import AddGroup from './AddGroup';
 import './App.css';
 
 const CHROME_STORAGE_GROUPS_KEY = 'groups';
@@ -55,13 +54,18 @@ const App = () => {
       <NavBar color={color} />
       <Switch>
         <Route exact path="/">
-          <GroupsList groups={groups} deleteGroup={deleteGroup} />
-          <AddGroup add={addGroup} />
+          <GroupsList groups={groups} addGroup={addGroup} deleteGroup={deleteGroup} />
         </Route>
         <Route exact path="/:group" render={(rrProps) => {
           const groupName = rrProps.match.params.group;
           const group = groups.find(g => g.name === groupName);
-          return <Group add={addLinkToGroup} group={group} deleteLink={deleteLinkFromGroup} />;
+          return (
+            <Group
+              group={group}
+              addLinkToGroup={addLinkToGroup}
+              deleteLinkFromGroup={deleteLinkFromGroup}
+            />
+          );
         }} />
       </Switch>
     </div>
