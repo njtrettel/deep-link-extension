@@ -1,7 +1,13 @@
 import React from 'react';
 
+const parseDestination = (rawDestination) => {
+  const split = rawDestination.split('.com');
+  return split[split.length - 1];
+};
+
 const DeepLink = (props) => {
-  const { name, destination, baseLink, deleteLink } = props;
+  const { name, destination: rawDestination, baseLink, deleteLink } = props;
+  const destination = parseDestination(rawDestination);
   const encodedDestination = encodeURIComponent(destination);
   const url = `${baseLink}${encodedDestination}`;
   return (
