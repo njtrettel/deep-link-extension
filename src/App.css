@@ -27,14 +27,14 @@
   margin-top: -16px;
 }
 
-/* Groups List */
-.groups-list {
+/* List */
+.list {
   display: flex;
   flex-direction: column;
   flex: 1;
 }
 
-.groups-list__item {
+.list__item {
   padding: 5px 0;
   text-decoration: none;
   color: black;
@@ -42,29 +42,16 @@
   justify-content: space-between;
 }
 
-.groups-list__item:hover {
+.list__item:hover {
   cursor: pointer;
   background-color: rgba(0,0,0,0.05);
 }
 
-.groups-list__item:hover .delete-button {
+.list__item:hover .delete-button {
   display: inline;
 }
 
-.groups-list__empty {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Group */
-.group {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-.group__empty {
+.list__empty {
   flex: 1;
   display: flex;
   align-items: center;
