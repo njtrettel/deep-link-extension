@@ -12,7 +12,7 @@ const DeepLink = (props) => {
   const url = `${baseLink}${encodedDestination}`;
   return (
     <div className="deep-link">
-      <a target="_blank" href={url}>{name}</a>
+      <a target="_blank" rel="noopener noreferrer" href={url}>{name}</a>
       <i className="fa fa-trash delete-button" onClick={(e) => {
         e.preventDefault();
         deleteLink(name);
