@@ -1,8 +1,15 @@
 import React from 'react';
 import classnames from 'classnames';
 
-const AddGroup = (props) => {
-  const { add, namePlaceholder, contentPlaceholder, buttonText } = props;
+const AddItem = (props) => {
+  const {
+    add,
+    namePlaceholder = 'Name...',
+    contentPlaceholder = 'Content...',
+    buttonText = 'Add',
+    nameRequired = true,
+    contentRequired = true
+  } = props;
   const [adding, setAdding] = React.useState(false);
   const [name, setName] = React.useState('');
   const [content, setContent] = React.useState('');
@@ -15,9 +22,11 @@ const AddGroup = (props) => {
     setContent(event.target.value);
     setErrors({ ...errors, content: false });
   };
+  const validateName = () => nameRequired ? !!name : true;
+  const validateContent = () => contentRequired ? !!content : true;
   const submit = () => {
-    if (!name || !content) {
-      return setErrors({ name: !name, content: !content });
+    if (!validateName() || !validateContent()) {
+      return setErrors({ name: !validateName(), content: !validateContent() });
     }
     add(name, content);
     setAdding(false);
@@ -38,9 +47,9 @@ const AddGroup = (props) => {
             <button onClick={() => setAdding(false)}>Cancel</button>
           </div>
         </React.Fragment>
-      ) : <button className="add-group__button" onClick={() => setAdding(true)}>{buttonText}</button>}
+      ) : <button className="add-list__button" onClick={() => setAdding(true)}>{buttonText}</button>}
     </div>
   );
-};
+}
 
-export default AddGroup;
+export default AddItem;
