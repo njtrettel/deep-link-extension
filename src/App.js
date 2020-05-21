@@ -1,10 +1,12 @@
 import React from 'react';
 import _ from 'lodash';
 import NavBar from './NavBar';
+import BaseLinks from './BaseLinks';
 import List from './List';
 import './App.css';
 
 const CHROME_STORAGE_GROUPS_KEY = 'groups';
+const CHROME_STORAGE_BASE_LINKS_KEY = 'base_links';
 const CHROME_STORAGE_COLOR_KEY = 'color';
 const DEFAULT_COLOR = '#607d8b';
 
@@ -43,43 +45,63 @@ const performActionOnGroupRecursively = (storedGroup, path, item, action) => {
 };
 
 const App = () => {
-  const [groups, setGroups] = React.useState([]);
+  const [baseGroup, setBaseGroup] = React.useState({});
+  const [baseLinks, setBaseLinks] = React.useState([]);
+  const [selectedBaseLink, setSelectedBaseLink] = React.useState(0);
   const [color, setColor] = React.useState('');
-  const baseGroup = { name: '__base__', baseLink: '', links: [], groups };
+
   React.useEffect(() => {
     global.chrome.storage.sync.get(CHROME_STORAGE_GROUPS_KEY, (data) => {
-      setGroups(data[CHROME_STORAGE_GROUPS_KEY] || []);
+      setBaseGroup(data[CHROME_STORAGE_GROUPS_KEY] || { name: '__base__', links: [], groups: [] });
+    });
+    global.chrome.storage.sync.get(CHROME_STORAGE_BASE_LINKS_KEY, (data) => {
+      setBaseLinks(data[CHROME_STORAGE_BASE_LINKS_KEY] || []);
     });
     global.chrome.storage.sync.get(CHROME_STORAGE_COLOR_KEY, (data) => {
       setColor(data[CHROME_STORAGE_COLOR_KEY] || DEFAULT_COLOR);
     });
   }, []);
-  const set = (newStorage) => {
-    global.chrome.storage.sync.set({ [CHROME_STORAGE_GROUPS_KEY]: newStorage });
-    setGroups(newStorage);
+  const storeGroups = (newGroup) => {
+    global.chrome.storage.sync.set({ [CHROME_STORAGE_GROUPS_KEY]: newGroup });
+    setBaseGroup(newGroup);
   };
-  const addGroup = (name, baseLink, path) => {
-    const newGroup = { name, baseLink, groups: [], links: [] };
-    const newStorage = performActionOnGroupRecursively({ groups: [baseGroup] }, path, newGroup, insertGroup);
-    set(newStorage.groups[0].groups);
+  const storeBaseLinks = (newBaseLinks) => {
+    global.chrome.storage.sync.set({ [CHROME_STORAGE_BASE_LINKS_KEY]: newBaseLinks });
+    setBaseLinks(newBaseLinks);
+  };
+  const addBaseLink = (name, link) => {
+    const newBaseLinks = [...baseLinks, { name, link }];
+    storeBaseLinks(newBaseLinks);
+  };
+  const addGroup = (name, path) => {
+    const groupToAdd = { name, groups: [], links: [] };
+    const newGroup = performActionOnGroupRecursively({ groups: [baseGroup] }, path, groupToAdd, insertGroup);
+    storeGroups(newGroup.groups[0]);
   };
   const addLinkToGroup = (name, destination, path) => {
-    const newLink = { name, destination };
-    const newStorage = performActionOnGroupRecursively({ groups: [baseGroup] }, path, newLink, insertLink);
-    set(newStorage.groups[0].groups);
+    const linkToAdd = { name, destination };
+    const newGroup = performActionOnGroupRecursively({ groups: [baseGroup] }, path, linkToAdd, insertLink);
+    storeGroups(newGroup.groups[0]);
   };
   const deleteGroup = (name, path) => {
-    const newStorage = performActionOnGroupRecursively({ groups: [baseGroup] }, path, name, removeGroup);
-    set(newStorage.groups[0].groups);
+    const newGroup = performActionOnGroupRecursively({ groups: [baseGroup] }, path, name, removeGroup);
+    storeGroups(newGroup.groups[0]);
   };
   const deleteLinkFromGroup = (name, path) => {
-    const newStorage = performActionOnGroupRecursively({ groups: [baseGroup] }, path, name, removeLinkFromGroup);
-    set(newStorage.groups[0].groups);
+    const newGroup = performActionOnGroupRecursively({ groups: [baseGroup] }, path, name, removeLinkFromGroup);
+    storeGroups(newGroup.groups[0]);
   };
   return (
     <div className="App">
       <NavBar color={color} />
+      <BaseLinks
+        baseLinks={baseLinks}
+        selectedBaseLink={selectedBaseLink}
+        setSelectedBaseLink={setSelectedBaseLink}
+        addBaseLink={addBaseLink}
+      />
       <List
+        baseLink={baseLinks[selectedBaseLink]}
         group={baseGroup}
         addGroup={addGroup}
         deleteGroup={deleteGroup}

@@ -3,13 +3,12 @@ import { Link, Switch, Route, useRouteMatch } from 'react-router-dom';
 import DeepLink from './DeepLink';
 import AddItem from './AddItem';
 
-const List = ({ group, addGroup, deleteGroup, addLink, deleteLink }) => {
+const List = ({ baseLink = {}, group, addGroup, deleteGroup, addLink, deleteLink }) => {
   const match = useRouteMatch();
 
-  const addGroupToThisGroup = (name, baseLink, groupPath = []) => {
+  const addGroupToThisGroup = (name, groupPath = []) => {
     const path = [group.name, ...groupPath];
-    const newBaseLink = `${group.baseLink}${baseLink}`;
-    return addGroup(name, newBaseLink, path);
+    return addGroup(name, path);
   };
 
   const addLinkToThisGroup = (name, destination, groupPath = []) => {
@@ -49,18 +48,19 @@ const List = ({ group, addGroup, deleteGroup, addLink, deleteLink }) => {
                 );
               }) : null}
               {links.length ? links.map((link) => (
-                <DeepLink baseLink={group.baseLink} {...link} deleteLink={deleteLinkFromThisGroup} />
+                <DeepLink baseLink={baseLink.link} {...link} deleteLink={deleteLinkFromThisGroup} />
               )) : null}
               {(!groups.length && !links.length) && <div className="list__empty">Click Add Below</div>}
             </div>
             <AddItem
+              classes="add-group"
               namePlaceholder="Group name..."
-              contentPlaceholder="Base link... (optional)"
-              contentRequired={false}
+              includeContent={false}
               buttonText="Add Group"
               add={addGroupToThisGroup}
             />
             <AddItem
+              classes="add-list"
               namePlaceholder="Link name..."
               contentPlaceholder="Destination..."
               buttonText="Add Link"
@@ -73,6 +73,7 @@ const List = ({ group, addGroup, deleteGroup, addLink, deleteLink }) => {
           const group = groups.find(g => g.name === name);
           return (
             <List
+              baseLink={baseLink}
               group={group}
               addGroup={addGroupToThisGroup}
               deleteGroup={deleteGroupFromThisGroup}
