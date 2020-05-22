@@ -48,7 +48,7 @@ const List = ({ baseLink = {}, group, addGroup, deleteGroup, addLink, deleteLink
                 );
               }) : null}
               {links.length ? links.map((link) => (
-                <DeepLink baseLink={baseLink.link} {...link} deleteLink={deleteLinkFromThisGroup} />
+                <DeepLink baseLink={baseLink} {...link} deleteLink={deleteLinkFromThisGroup} />
               )) : null}
               {(!groups.length && !links.length) && <div className="list__empty">Click Add Below</div>}
             </div>

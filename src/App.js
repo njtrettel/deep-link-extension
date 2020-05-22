@@ -69,8 +69,8 @@ const App = () => {
     global.chrome.storage.sync.set({ [CHROME_STORAGE_BASE_LINKS_KEY]: newBaseLinks });
     setBaseLinks(newBaseLinks);
   };
-  const addBaseLink = (name, link) => {
-    const newBaseLinks = [...baseLinks, { name, link }];
+  const addBaseLink = (name, link, variables) => {
+    const newBaseLinks = [...baseLinks, { name, link, variables }];
     storeBaseLinks(newBaseLinks);
   };
   const addGroup = (name, path) => {
