@@ -52,20 +52,22 @@ const List = ({ baseLink = {}, group, addGroup, deleteGroup, addLink, deleteLink
               )) : null}
               {(!groups.length && !links.length) && <div className="list__empty">Click Add Below</div>}
             </div>
-            <AddItem
-              classes="add-group"
-              namePlaceholder="Group name..."
-              includeContent={false}
-              buttonText="Add Group"
-              add={addGroupToThisGroup}
-            />
-            <AddItem
-              classes="add-list"
-              namePlaceholder="Link name..."
-              contentPlaceholder="Destination..."
-              buttonText="Add Link"
-              add={addLinkToThisGroup}
-            />
+            <div className="list__actions">
+              <AddItem
+                classes="add-group"
+                namePlaceholder="Group name..."
+                includeContent={false}
+                buttonText="Add Group"
+                add={addGroupToThisGroup}
+              />
+              <AddItem
+                classes="add-list"
+                namePlaceholder="Link name..."
+                contentPlaceholder="Destination..."
+                buttonText="Add Link"
+                add={addLinkToThisGroup}
+              />
+            </div>
           </React.Fragment>
         )} />
         <Route path={normalizePath(`${match.url}/:group`)} render={(rrProps) => {
