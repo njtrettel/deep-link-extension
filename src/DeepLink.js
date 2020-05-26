@@ -2,7 +2,7 @@ import React from 'react';
 
 const parseDestination = (rawDestination, { variables = {} }) => {
   const variableRegex = /\${(.+?)}/g;
-  const split = rawDestination.split('.com');
+  const split = rawDestination.split('aws.amazon.com');
   const destinationString = split[split.length - 1];
   const destinationVariables = destinationString.match(variableRegex) || [];
   const destination = destinationVariables.reduce((result, variable) => {
